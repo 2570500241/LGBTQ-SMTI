@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LGBTQ+SMTI 老公人格测试</title>
+  <style>
+    :root {
+      --bg: #fff6ef;
+      --bg-2: #fffaf4;
+      --panel: rgba(255, 252, 248, 0.92);
+      --line: rgba(93, 58, 44, 0.12);
+      --text: #36221c;
+      --muted: #755c52;
+      --accent: #d94f70;
+      --accent-2: #f59f45;
+      --accent-3: #2f8f83;
+      --accent-4: #7a4ff0;
+      --shadow: 0 20px 60px rgba(92, 56, 34, 0.12);
+      --radius: 28px;
+      --radius-sm: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      color: var(--text);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(217, 79, 112, 0.18), transparent 28%),
+        radial-gradient(circle at 90% 20%, rgba(245, 159, 69, 0.16), transparent 26%),
+        radial-gradient(circle at 50% 100%, rgba(47, 143, 131, 0.16), transparent 28%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.22) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.22) 1px, transparent 1px);
+      background-size: 24px 24px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.45), transparent 90%);
+    }
+
+    .shell {
+      width: min(1080px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: 20px 0 54px;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 34px;
+    }
+
+    .hero::after,
+    .hero::before {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      pointer-events: none;
+      filter: blur(6px);
+    }
+
+    .hero::before {
+      width: 220px;
+      height: 220px;
+      top: -70px;
+      right: -40px;
+      background: linear-gradient(180deg, rgba(217,79,112,0.22), rgba(217,79,112,0.03));
+    }
+
+    .hero::after {
+      width: 180px;
+      height: 180px;
+      left: -50px;
+      bottom: -70px;
+      background: linear-gradient(180deg, rgba(47,143,131,0.18), rgba(47,143,131,0.03));
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--line);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-visual {
+      display: grid;
+      gap: 18px;
+    }
+
+    .cover-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .cover-card {
+      overflow: hidden;
+      padding: 0;
+      min-height: 420px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,244,236,0.9));
+    }
+
+    .cover-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 300px;
+      object-fit: cover;
+    }
+
+    .hero-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(36px, 8vw, 72px);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      margin-top: 18px;
+      max-width: 760px;
+    }
+
+    .hero-title .grad {
+      background: linear-gradient(120deg, var(--accent), var(--accent-2) 48%, var(--accent-3));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-sub {
+      margin-top: 18px;
+      max-width: 700px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.9;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .stat-panel,
+    .note-panel,
+    .test-wrap,
+    .result-wrap,
+    .feature-box,
+    .result-main,
+    .score-box,
+    .ranking-box,
+    .deploy-box {
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) - 6px);
+      background: rgba(255,255,255,0.72);
+    }
+
+    .stat-panel,
+    .note-panel {
+      padding: 18px;
+    }
+
+    .stat-panel {
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.88), rgba(255,243,234,0.94));
+    }
+
+    .stat-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .stat-item strong,
+    .feature-box strong,
+    .rank-name,
+    .result-name {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .stat-item strong {
+      font-size: 22px;
+      color: var(--accent);
+    }
+
+    .stat-item span,
+    .note-panel p,
+    .feature-box p,
+    .rank-sub,
+    .score-row span,
+    .result-copy,
+    .footnote,
+    .progress-text,
+    .hint,
+    .question-meta,
+    .result-tagline,
+    .deploy-box p {
+      color: var(--muted);
+    }
+
+    .note-panel {
+      margin-top: 18px;
+      line-height: 1.85;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    .btn-primary,
+    .btn-secondary {
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-weight: 700;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), #cc4c92, var(--accent-4));
+      box-shadow: 0 14px 34px rgba(165, 72, 112, 0.24);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.86);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .feature-box {
+      padding: 18px;
+      min-height: 150px;
+    }
+
+    .feature-box strong {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .test-wrap,
+    .result-wrap {
+      padding: 22px;
+      margin-top: 18px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .progress {
+      height: 12px;
+      flex: 1;
+      min-width: 220px;
+      border-radius: 999px;
+      background: rgba(117, 92, 82, 0.12);
+      overflow: hidden;
+    }
+
+    .progress > span {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+      transition: width 0.22s ease;
+    }
+
+    .question-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .question {
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,249,245,0.88));
+    }
+
+    .question-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(217,79,112,0.08);
+      border: 1px solid rgba(217,79,112,0.12);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .question-title {
+      font-size: 17px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .option {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.82);
+      transition: border-color 0.16s ease, transform 0.16s ease, background 0.16s ease;
+    }
+
+    .option:hover {
+      transform: translateY(-1px);
+      border-color: rgba(217,79,112,0.24);
+      background: rgba(255,255,255,0.96);
+    }
+
+    .option input {
+      margin-top: 3px;
+      accent-color: var(--accent);
+      transform: scale(1.08);
+      flex-shrink: 0;
+    }
+
+    .option-code {
+      width: 26px;
+      flex-shrink: 0;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .actions-bottom,
+    .result-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .result-layout {
+      display: grid;
+      gap: 18px;
+    }
+
+    .result-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .result-main,
+    .score-box,
+    .ranking-box,
+    .deploy-box {
+      padding: 20px;
+    }
+
+    .result-main {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top right, rgba(217,79,112,0.14), transparent 42%),
+        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,247,241,0.86));
+    }
+
+    .result-poster {
+      width: 100%;
+      border-radius: 20px;
+      margin-bottom: 18px;
+      display: block;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.78);
+    }
+
+    .result-poster.is-empty {
+      display: none;
+    }
+
+    .result-code {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.78);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .result-name {
+      font-size: clamp(34px, 7vw, 58px);
+      line-height: 1;
+      margin-top: 16px;
+      letter-spacing: -0.04em;
+    }
+
+    .result-tagline {
+      margin-top: 12px;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .result-copy {
+      margin-top: 18px;
+      font-size: 16px;
+      line-height: 1.9;
+      color: #473029;
+      white-space: pre-wrap;
+    }
+
+    .score-box h3,
+    .ranking-box h3,
+    .deploy-box h3 {
+      font-size: 17px;
+      margin-bottom: 12px;
+    }
+
+    .score-list,
+    .rank-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .score-row,
+    .rank-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.82);
+    }
+
+    .score-row strong,
+    .rank-score {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .rank-name {
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .deploy-box {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.94), rgba(243,252,250,0.92));
+    }
+
+    .deploy-tag {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(47,143,131,0.1);
+      color: var(--accent-3);
+      border: 1px solid rgba(47,143,131,0.16);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .footnote {
+      margin-top: 16px;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 920px) {
+      .hero-grid,
+      .result-top,
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell { width: min(100% - 16px, 1080px); }
+      .hero,
+      .test-wrap,
+      .result-wrap { padding: 16px; }
+      .hero-title { font-size: 40px; }
+      .question-title { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section id="intro" class="screen active">
+      <div class="hero card">
+        <div class="eyebrow">LGBTQ+SMTI / 老公人格测试</div>
+        <div class="hero-grid">
+          <div>
+            <h1 class="hero-title">
+              做这样一个测试，
+              <span class="grad">看看你是哪种老公。</span>
+            </h1>
+            <p class="hero-sub">14道题，5种结果，测测你到底是哪种老公。</p>
+            <div class="hero-actions">
+              <button id="startBtn" class="btn-primary">开始测试</button>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="cover-card card">
+              <img class="cover-image" src="./image/封面1.jpg" alt="LGBTQ+SMTI 测试封面" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="test" class="screen">
+      <div class="test-wrap card">
+        <div class="topbar">
+          <div class="progress"><span id="progressBar"></span></div>
+          <div class="progress-text" id="progressText">0 / 14</div>
+        </div>
+
+        <div id="questionList" class="question-list"></div>
+
+        <div class="actions-bottom">
+          <div id="testHint" class="hint">题没做完之前，系统不会轻易告诉你到底适合当哪种老公。</div>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button id="backIntroBtn" class="btn-secondary">返回首页</button>
+            <button id="submitBtn" class="btn-primary" disabled>提交并查看结果</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="result" class="screen">
+      <div class="result-wrap card">
+        <div class="result-layout">
+          <div class="result-top">
+            <div class="result-main">
+              <img id="resultPoster" class="result-poster is-empty" alt="测试结果图" />
+              <div id="resultCode" class="result-code">SMTI TYPE</div>
+              <div id="resultName" class="result-name">大老公</div>
+              <div id="resultTagline" class="result-tagline">标签会显示在这里。</div>
+              <div id="resultCopy" class="result-copy"></div>
+            </div>
+
+            <div class="score-box">
+              <h3>你的老公吸附度</h3>
+              <div id="scoreList" class="score-list"></div>
+              <div class="footnote" id="resultFootnote">
+                叠甲：老公们，这些都是 AI 写的，只是娱乐向，不是性格诊断！爱你们~~~
+              </div>
+            </div>
+          </div>
+
+          <div class="ranking-box">
+            <h3>前三结果</h3>
+            <div id="rankList" class="rank-list"></div>
+          </div>
+
+        </div>
+
+        <div class="result-actions">
+          <div class="hint">如果你对结果不服，通常说明你准备开始第二次测试了。</div>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button id="restartBtn" class="btn-secondary">重新测试</button>
+            <button id="toTopBtn" class="btn-primary">回到首页</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const TYPES = {
+      da: {
+        code: "LG-01",
+        name: "大老公",
+        tagline: "会接话、会照顾气氛，和你待在一起通常不太累。",
+        desc: "你不一定是最显眼的那个，但通常挺会让场子顺下来。冷场时你会接一句，尴尬时你会圆一下，别人不太舒服的时候你也常能先察觉到。很多时候不是你刻意表现，只是你确实比较会顾及大家的感受。\n\n你的老公味更像一种相处上的舒服。能聊、能接、分寸也还行，出了点小状况时不会立刻把气氛搞得更僵。跟你熟起来以后，别人往往会觉得你这个人还挺好相处，也挺适合放在日常里。"
+      },
+      shuai: {
+        code: "LG-02",
+        name: "帅老公",
+        tagline: "有主见、会表达，遇到重要的事通常不拧巴。",
+        desc: "你在关系里给人的感觉，通常不是特别炸场的那种帅，而是比较清楚自己要什么，也比较愿意把话说开。遇到重要的事你不太喜欢含糊带过，哪怕表达得没那么圆，也更倾向于认真沟通，而不是把问题晾着不管。\n\n你的老公味不在于时刻都很强势，而在于谈关系这件事时比较成熟。你知道表达很重要，也愿意主动回应、主动沟通，只是未必每次都说得多漂亮。那种有主见、也肯开口的人，通常会让人觉得相处起来挺安心。"
+      },
+      mei: {
+        code: "LG-03",
+        name: "美老公",
+        tagline: "细腻、讲理、比较会体谅人，不爱把自己挂嘴边。",
+        desc: "你平时可能不算特别高调，但很多细节你其实都看在眼里。别人情绪不太对、气氛哪里别扭、哪句话该收一点，你通常比很多人更早感觉到。你不一定会立刻站出来接管局面，但会用自己的方式把事情往稳的方向拉。\n\n你的老公味不是靠外放，而是靠耐心和理解力。你愿意听，也愿意想一下对方到底在介意什么，很多时候不会把自己放到最前面。跟你相处久了，别人会慢慢发现你这种温和和靠谱其实挺难得。"
+      },
+      hao: {
+        code: "LG-04",
+        name: "豪老公",
+        tagline: "不太别扭，也不太抠搜，喜欢就会给得比较直接。",
+        desc: "你给人的感觉通常比较敞亮。开心会表现出来，喜欢什么也不太藏着掖着，对人对事往往都算大方。不是那种非要做很多大动作的人，但在相处里会让人觉得你没那么多弯弯绕，情绪和态度都挺好懂。\n\n你的老公味不靠压场，更多是靠一种轻松的热情。愿意分享、愿意回应，也不太爱算得很细，所以别人跟你相处时常会觉得没什么负担。时间长了，这种自然又不拧巴的劲儿其实挺容易让人记住。"
+      },
+      laopo: {
+        code: "LG-05",
+        name: "魅力老婆",
+        tagline: "不太像标准模板，更多时候是靠自己的节奏在吸引人。",
+        desc: "你的答案没有特别稳定地落在某一种类型上，所以最后看起来更像是很难被一句话概括的人。你有些地方挺主动，有些地方又很看心情；有时很会照顾人，有时又明显更在意自己的节奏。\n\n“魅力老婆”不是说你比别人更夸张，而是说你没那么像固定人设。你身上有几种感觉混在一起，别人不一定一下就能总结你到底是什么路数，但相处久了通常还是会记得你这个人的味道。"
+      }
+    };
+
+    const TYPE_IMAGES = {
+      da: "./image/大老公.png",
+      shuai: "./image/帅老公.png",
+      mei: "./image/美老公.png",
+      hao: "./image/豪老公.png",
+      laopo: "./image/魅力老婆.png"
+    };
+
+    const QUESTIONS = [
+      {
+        id: "q1",
+        axis: "气场",
+        text: "朋友局突然冷场，你最像哪种补位选手？",
+        options: [
+          { label: "我会接梗抛梗，硬把冷场盘成热场。", weights: { da: 4 } },
+          { label: "我直接控场，三句话把氛围拉回来。", weights: { shuai: 4 } },
+          { label: "我会先观察，再温柔地把每个人都带进来。", weights: { mei: 4 } },
+          { label: "我负责可爱营业，顺便点点吃的给大家续命。", weights: { hao: 4 } }
+        ]
+      },
+      {
+        id: "q2",
+        axis: "外形管理",
+        text: "要见很重要的人，你出门前最后会确认什么？",
+        options: [
+          { label: "状态得松弛，讲话和笑点都要在线。", weights: { da: 3, mei: 1 } },
+          { label: "整个人要利落到像刚从主角镜头里走出来。", weights: { shuai: 4 } },
+          { label: "细节必须舒服，香味、搭配、表情都不能冒犯。", weights: { mei: 4 } },
+          { label: "看起来要乖、要亮、要让人想说一句好可爱。", weights: { hao: 4 } }
+        ]
+      },
+      {
+        id: "q3",
+        axis: "关系表达",
+        text: "你暗恋一个人时，最像下面哪种操作？",
+        options: [
+          { label: "先逗对方开心，再慢慢让对方习惯我在。", weights: { da: 4 } },
+          { label: "喜欢就追，反正帅的人不能输给犹豫。", weights: { shuai: 4 } },
+          { label: "会认真了解对方，再用很细的方式表达好感。", weights: { mei: 4 } },
+          { label: "我会送小东西、分享零食、把偏爱给得很自然。", weights: { hao: 4 } }
+        ]
+      },
+      {
+        id: "q4",
+        axis: "金钱观",
+        text: "和喜欢的人出去玩，哪句最像你的消费观？",
+        options: [
+          { label: "花钱可以，但体验和气氛必须值回票价。", weights: { da: 4 } },
+          { label: "别磨叽，决定了就上，主打一个干脆。", weights: { shuai: 4 } },
+          { label: "我会优先考虑对方舒服不舒服，而不是贵不贵。", weights: { mei: 4 } },
+          { label: "开心就请，主打一个不扫兴。", weights: { hao: 4 } }
+        ]
+      },
+      {
+        id: "q5",
+        axis: "性格高光",
+        text: "朋友对你最常见的评价，哪句最像真的？",
+        options: [
+          { label: "你这人好会聊天，跟你在一起不容易尴尬。", weights: { da: 4 } },
+          { label: "你一旦上头就特别勇，真敢冲。", weights: { shuai: 4 } },
+          { label: "你看事情很透，但从来不拿聪明压人。", weights: { mei: 4 } },
+          { label: "你好像永远都很可爱，而且不小气。", weights: { hao: 4 } }
+        ]
+      },
+      {
+        id: "q6",
+        axis: "做决定",
+        text: "外卖点错地址、电影快开场、朋友还在磨蹭，这时你会？",
+        options: [
+          { label: "先稳住大家情绪，再一个个收拾残局。", weights: { da: 4 } },
+          { label: "我直接拍板，听我的，走这条最快。", weights: { shuai: 4 } },
+          { label: "先确认有没有人被影响，再想最周全的办法。", weights: { mei: 4 } },
+          { label: "算了我补差价，今天不能让大家玩得难看。", weights: { hao: 4 } }
+        ]
+      },
+      {
+        id: "q7",
+        axis: "夸奖点",
+        text: "如果别人说你“老公感很强”，你最想是因为什么？",
+        options: [
+          { label: "因为我有趣又体面，跟我相处没压力。", weights: { da: 4 } },
+          { label: "因为我帅，而且关键时刻真能顶上。", weights: { shuai: 4 } },
+          { label: "因为我聪明、温和，还挺会照顾人。", weights: { mei: 4 } },
+          { label: "因为我又甜又大方，很难让人不喜欢。", weights: { hao: 4 } }
+        ]
+      },
+      {
+        id: "q8",
+        axis: "日常状态",
+        text: "你的日常底色更像下面哪种 vibe？",
+        options: [
+          { label: "有意思、会说话、待人舒服，是我的基本盘。", weights: { da: 4 } },
+          { label: "利落、能打、看上去像不太会输。", weights: { shuai: 4 } },
+          { label: "脑子清楚、心也软，不争不抢但很有存在感。", weights: { mei: 4 } },
+          { label: "甜甜的、亮亮的、愿意分享和偏爱。", weights: { hao: 4 } }
+        ]
+      },
+      {
+        id: "q9",
+        axis: "宠爱方式",
+        text: "对象突然发来“我今天真的有点委屈”，你第一反应是？",
+        options: [
+          { label: "先哄，再让你笑出来，最后再聊发生了啥。", weights: { da: 4 } },
+          { label: "谁惹你了？我先去把这事解决。", weights: { shuai: 4 } },
+          { label: "我会认真听完，再温柔地帮你理清楚。", weights: { mei: 4 } },
+          { label: "先抱抱，再买点好吃的，把心情救回来。", weights: { hao: 4 } }
+        ]
+      },
+      {
+        id: "q10",
+        axis: "社交吸引力",
+        text: "别人最容易因为什么对你上头？",
+        options: [
+          { label: "跟我相处很开心，而且我很会给情绪价值。", weights: { da: 4 } },
+          { label: "我帅得挺有攻击性，还偏偏很果断。", weights: { shuai: 4 } },
+          { label: "我不炸场，但就是让人觉得舒服又高级。", weights: { mei: 4 } },
+          { label: "我像个会发光的小蛋糕，甜但不腻。", weights: { hao: 4 } }
+        ]
+      },
+      {
+        id: "q11",
+        axis: "做人方式",
+        text: "你更认可下面哪种做人逻辑？",
+        options: [
+          { label: "世界已经够累了，我更想让身边人舒服一点。", weights: { da: 4 } },
+          { label: "机会来了就抓，不行也得先上。", weights: { shuai: 4 } },
+          { label: "聪明不该用来碾人，而该用来理解人。", weights: { mei: 4 } },
+          { label: "有能力的时候就多给一点，别太抠。", weights: { hao: 4 } }
+        ]
+      },
+      {
+        id: "q12",
+        axis: "风格偏好",
+        text: "下面哪句夸奖，会让你当场在心里截图保存？",
+        options: [
+          { label: "你真的很会相处。", weights: { da: 4 } },
+          { label: "你也太帅了，而且是会负责的那种帅。", weights: { shuai: 4 } },
+          { label: "你这个人真的又聪明又善良。", weights: { mei: 4 } },
+          { label: "你好可爱，而且人还大方。", weights: { hao: 4 } }
+        ]
+      },
+      {
+        id: "q13",
+        axis: "高光时刻",
+        text: "在一段关系里，你最容易在哪种时刻封神？",
+        options: [
+          { label: "两个人都累的时候，我还能把日子过得有趣。", weights: { da: 4 } },
+          { label: "关键节点上，我总是最敢做决定的那个。", weights: { shuai: 4 } },
+          { label: "我会用理解和耐心，把关系养得很稳。", weights: { mei: 4 } },
+          { label: "我会把小幸福堆满，让人舍不得走。", weights: { hao: 4 } }
+        ]
+      },
+      {
+        id: "q14",
+        axis: "终极自评",
+        text: "最后一题，给自己挂个最想要的头衔：",
+        options: [
+          { label: "有趣又有风度的包容系老公。", weights: { da: 4 } },
+          { label: "勇敢果断的帅气系老公。", weights: { shuai: 4 } },
+          { label: "智慧善良还谦虚的隐藏款老公。", weights: { mei: 4 } },
+          { label: "可爱清纯又大方的甜口老公。", weights: { hao: 4 } }
+        ]
+      }
+    ];
+
+    const PRIMARY_TYPE_ORDER = ["da", "shuai", "mei", "hao"];
+    const state = { answers: {}, questionOrder: [] };
+
+    const screens = {
+      intro: document.getElementById("intro"),
+      test: document.getElementById("test"),
+      result: document.getElementById("result")
+    };
+
+    const questionList = document.getElementById("questionList");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const submitBtn = document.getElementById("submitBtn");
+    const testHint = document.getElementById("testHint");
+
+    function showScreen(name) {
+      Object.entries(screens).forEach(([key, element]) => {
+        element.classList.toggle("active", key === name);
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function renderQuestions() {
+      const orderedQuestions = state.questionOrder.length ? state.questionOrder : QUESTIONS;
+
+      questionList.innerHTML = orderedQuestions.map((question, index) => `
+        <article class="question">
+          <div class="question-meta">
+            <div class="badge">第 ${index + 1} 题</div>
+            <div>${question.axis}</div>
+          </div>
+          <div class="question-title">${question.text}</div>
+          <div class="options">
+            ${question.options.map((option, optionIndex) => {
+              const checked = state.answers[question.id] === optionIndex ? "checked" : "";
+              const code = ["A", "B", "C", "D"][optionIndex];
+              return `
+                <label class="option">
+                  <input type="radio" name="${question.id}" value="${optionIndex}" ${checked} />
+                  <div class="option-code">${code}</div>
+                  <div>${option.label}</div>
+                </label>
+              `;
+            }).join("")}
+          </div>
+        </article>
+      `).join("");
+
+      questionList.querySelectorAll('input[type="radio"]').forEach((input) => {
+        input.addEventListener("change", (event) => {
+          state.answers[event.target.name] = Number(event.target.value);
+          updateProgress();
+        });
+      });
+
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const done = QUESTIONS.filter((question) => state.answers[question.id] !== undefined).length;
+      const total = QUESTIONS.length;
+      const percent = total ? Math.round(done / total * 100) : 0;
+      progressBar.style.width = percent + "%";
+      progressText.textContent = `${done} / ${total}`;
+      submitBtn.disabled = done !== total;
+      testHint.textContent = done === total
+        ? "都做完了。现在看看系统把你判成哪种老公。"
+        : "题没做完之前，系统不会轻易告诉你到底适合当哪种老公。";
+    }
+
+    function computeResult() {
+      const scores = { da: 0, shuai: 0, mei: 0, hao: 0, laopo: 0 };
+
+      QUESTIONS.forEach((question) => {
+        const answerIndex = state.answers[question.id];
+        const weights = question.options[answerIndex].weights;
+        PRIMARY_TYPE_ORDER.forEach((key) => {
+          scores[key] += weights[key] || 0;
+        });
+      });
+
+      const primaryRanked = PRIMARY_TYPE_ORDER.map((key) => ({
+        key,
+        ...TYPES[key],
+        score: scores[key]
+      })).sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return PRIMARY_TYPE_ORDER.indexOf(a.key) - PRIMARY_TYPE_ORDER.indexOf(b.key);
+      });
+
+      const totalPrimaryScore = primaryRanked.reduce((sum, item) => sum + item.score, 0);
+      const top = primaryRanked[0];
+      const second = primaryRanked[1];
+      const mixedSpread = top.score - second.score <= 2;
+      const lowDominance = totalPrimaryScore ? (top.score / totalPrimaryScore) < 0.31 : true;
+
+      if (mixedSpread || lowDominance) {
+        scores.laopo = Math.max(top.score, second.score) + 2;
+      }
+
+      const ranked = [...PRIMARY_TYPE_ORDER, "laopo"].map((key) => ({
+        key,
+        ...TYPES[key],
+        score: scores[key]
+      })).sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        if (keyPriority(a.key) !== keyPriority(b.key)) return keyPriority(a.key) - keyPriority(b.key);
+        return 0;
+      });
+
+      const totalScore = ranked.reduce((sum, item) => sum + item.score, 0);
+      const scored = ranked.map((item) => ({
+        ...item,
+        percent: totalScore ? Math.round(item.score / totalScore * 100) : 0
+      }));
+
+      return { scores, ranked: scored, winner: scored[0] };
+    }
+
+    function keyPriority(key) {
+      return [...PRIMARY_TYPE_ORDER, "laopo"].indexOf(key);
+    }
+
+    function renderResult() {
+      const result = computeResult();
+      const winner = result.winner;
+      const poster = document.getElementById("resultPoster");
+
+      document.getElementById("resultCode").textContent = winner.code;
+      document.getElementById("resultName").textContent = winner.name;
+      document.getElementById("resultTagline").textContent = winner.tagline;
+      document.getElementById("resultCopy").textContent = winner.desc;
+      poster.src = TYPE_IMAGES[winner.key];
+      poster.alt = winner.name;
+      poster.classList.remove("is-empty");
+
+      document.getElementById("scoreList").innerHTML = result.ranked.map((item) => `
+        <div class="score-row">
+          <span>${item.name}</span>
+          <strong>${item.score} 分 / ${item.percent}%</strong>
+        </div>
+      `).join("");
+
+      document.getElementById("rankList").innerHTML = result.ranked.slice(0, 3).map((item, index) => `
+        <div class="rank-item">
+          <div>
+            <div class="rank-name">#${index + 1} ${item.name}</div>
+            <div class="rank-sub">${item.tagline}</div>
+          </div>
+          <div class="rank-score">${item.percent}%</div>
+        </div>
+      `).join("");
+
+      document.getElementById("resultFootnote").textContent =
+        winner.key === "laopo"
+          ? "你被判成“魅力老婆”，意思不是出局，而是你的个人魅力已经不甘心只待在老公赛道里。"
+          : "叠甲：老公们，这些都是 AI 写的，只是娱乐向，不是性格诊断！爱你们~~~";
+
+      showScreen("result");
+    }
+
+    function startTest() {
+      state.answers = {};
+      state.questionOrder = shuffle(QUESTIONS);
+      renderQuestions();
+      showScreen("test");
+    }
+
+    document.getElementById("startBtn").addEventListener("click", startTest);
+    document.getElementById("backIntroBtn").addEventListener("click", () => showScreen("intro"));
+    document.getElementById("submitBtn").addEventListener("click", renderResult);
+    document.getElementById("restartBtn").addEventListener("click", startTest);
+    document.getElementById("toTopBtn").addEventListener("click", () => showScreen("intro"));
+  </script>
+</body>
+</html>
